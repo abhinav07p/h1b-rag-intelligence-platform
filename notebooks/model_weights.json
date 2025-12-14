@@ -1,0 +1,43 @@
+{
+  "features": [
+    "avg_salary",
+    "state_CA",
+    "state_IL",
+    "state_MA",
+    "state_NJ",
+    "state_NY",
+    "state_Other",
+    "state_TX",
+    "state_WA",
+    "salary_category_High",
+    "salary_category_Low",
+    "salary_category_Medium",
+    "job_category_Consultant",
+    "job_category_Data Scientist / Analyst",
+    "job_category_Manager / Lead",
+    "job_category_Other",
+    "job_category_Research Scientist",
+    "job_category_Software Engineer"
+  ],
+  "feature_importances": [
+    0.4126605220085009,
+    0.018707406977098797,
+    0.009676663794444713,
+    0.01051826309847819,
+    0.027157446570396534,
+    0.04152860621386446,
+    0.040276226328397446,
+    0.020586264733359214,
+    0.04883811990825352,
+    0.06267007844924018,
+    0.07869506140698958,
+    0.03487555762929391,
+    0.0036224145966487495,
+    0.028944969313590516,
+    0.04993545505090856,
+    0.0476228218178212,
+    0.0001225475019649235,
+    0.06356157460074881
+  ],
+  "model_type": "RandomForestClassifier"
+}

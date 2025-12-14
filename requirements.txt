@@ -1,0 +1,24 @@
+# H-1B RAG Application - Requirements
+# INFO 7390: Advances in Data Science and Architecture
+
+# Web Framework
+streamlit>=1.31.0
+
+# Data Processing
+pandas>=2.1.4
+numpy>=1.26.3
+openpyxl>=3.1.2
+
+# Machine Learning
+scikit-learn>=1.4.0
+xgboost>=2.0.0
+
+# Visualization
+plotly>=5.18.0
+
+# AI / LLM / Vector Database
+openai>=2.0.0
+pinecone>=3.0.0
+
+# HTTP Requests
+requests>=2.31.0

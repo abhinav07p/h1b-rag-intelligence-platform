@@ -1,0 +1,1339 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>H-1B Sponsorship Intelligence Platform</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root {
+            --primary: #14b8a6;
+            --primary-dark: #0d9488;
+            --secondary: #f59e0b;
+            --bg-dark: #0f172a;
+            --bg-card: #1e293b;
+            --bg-card-hover: #334155;
+            --text-primary: #f1f5f9;
+            --text-secondary: #94a3b8;
+            --text-muted: #64748b;
+            --border: #334155;
+            --success: #10b981;
+            --warning: #f59e0b;
+            --danger: #ef4444;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background: var(--bg-dark);
+            color: var(--text-primary);
+            line-height: 1.7;
+        }
+
+        /* Navigation */
+        nav {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            background: rgba(15, 23, 42, 0.95);
+            backdrop-filter: blur(10px);
+            border-bottom: 1px solid var(--border);
+            z-index: 1000;
+            padding: 1rem 2rem;
+        }
+
+        .nav-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            font-size: 1.5rem;
+            font-weight: 700;
+            background: linear-gradient(90deg, var(--primary), var(--secondary));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 2rem;
+            list-style: none;
+        }
+
+        .nav-links a {
+            color: var(--text-secondary);
+            text-decoration: none;
+            font-size: 0.9rem;
+            transition: color 0.3s;
+        }
+
+        .nav-links a:hover {
+            color: var(--primary);
+        }
+
+        /* Hero Section */
+        .hero {
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            padding: 6rem 2rem 4rem;
+            background: linear-gradient(135deg, var(--bg-dark) 0%, #1a2744 100%);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .hero::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: radial-gradient(circle at 30% 50%, rgba(20, 184, 166, 0.1) 0%, transparent 50%),
+                        radial-gradient(circle at 70% 50%, rgba(245, 158, 11, 0.1) 0%, transparent 50%);
+        }
+
+        .hero-content {
+            position: relative;
+            max-width: 900px;
+        }
+
+        .hero-badge {
+            display: inline-block;
+            background: var(--bg-card);
+            border: 1px solid var(--primary);
+            color: var(--primary);
+            padding: 0.5rem 1.5rem;
+            border-radius: 50px;
+            font-size: 0.85rem;
+            margin-bottom: 2rem;
+        }
+
+        .hero h1 {
+            font-size: 3.5rem;
+            font-weight: 800;
+            margin-bottom: 1.5rem;
+            background: linear-gradient(90deg, var(--text-primary), var(--primary));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .hero p {
+            font-size: 1.25rem;
+            color: var(--text-secondary);
+            margin-bottom: 2rem;
+            max-width: 700px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        .hero-meta {
+            display: flex;
+            justify-content: center;
+            gap: 3rem;
+            margin-top: 3rem;
+            flex-wrap: wrap;
+        }
+
+        .hero-meta-item {
+            text-align: center;
+        }
+
+        .hero-meta-item span {
+            display: block;
+            color: var(--text-muted);
+            font-size: 0.85rem;
+        }
+
+        .hero-meta-item strong {
+            color: var(--text-primary);
+            font-size: 1.1rem;
+        }
+
+        /* Sections */
+        section {
+            padding: 5rem 2rem;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .section-header {
+            text-align: center;
+            margin-bottom: 4rem;
+        }
+
+        .section-header h2 {
+            font-size: 2.5rem;
+            font-weight: 700;
+            margin-bottom: 1rem;
+            color: var(--text-primary);
+        }
+
+        .section-header p {
+            color: var(--text-secondary);
+            font-size: 1.1rem;
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        .section-number {
+            display: inline-block;
+            background: linear-gradient(135deg, var(--primary), var(--primary-dark));
+            color: white;
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            line-height: 40px;
+            font-weight: 700;
+            margin-bottom: 1rem;
+        }
+
+        /* Problem Section */
+        .problem-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 2rem;
+        }
+
+        .problem-card {
+            background: var(--bg-card);
+            border-radius: 16px;
+            padding: 2rem;
+            border: 1px solid var(--border);
+            transition: transform 0.3s, border-color 0.3s;
+        }
+
+        .problem-card:hover {
+            transform: translateY(-5px);
+            border-color: var(--primary);
+        }
+
+        .problem-card i {
+            font-size: 2.5rem;
+            color: var(--danger);
+            margin-bottom: 1rem;
+        }
+
+        .problem-card h3 {
+            font-size: 1.25rem;
+            margin-bottom: 0.75rem;
+            color: var(--text-primary);
+        }
+
+        .problem-card p {
+            color: var(--text-secondary);
+            font-size: 0.95rem;
+        }
+
+        /* Solution Section */
+        .solution-container {
+            background: var(--bg-card);
+            border-radius: 24px;
+            padding: 3rem;
+            border: 1px solid var(--border);
+        }
+
+        .solution-header {
+            text-align: center;
+            margin-bottom: 3rem;
+        }
+
+        .solution-header h3 {
+            font-size: 1.75rem;
+            color: var(--primary);
+            margin-bottom: 0.5rem;
+        }
+
+        .features-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+        }
+
+        .feature-card {
+            background: var(--bg-dark);
+            border-radius: 12px;
+            padding: 1.5rem;
+            border: 1px solid var(--border);
+        }
+
+        .feature-icon {
+            width: 50px;
+            height: 50px;
+            background: linear-gradient(135deg, var(--primary), var(--primary-dark));
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 1rem;
+        }
+
+        .feature-icon i {
+            color: white;
+            font-size: 1.25rem;
+        }
+
+        .feature-card h4 {
+            font-size: 1.1rem;
+            margin-bottom: 0.5rem;
+            color: var(--text-primary);
+        }
+
+        .feature-card p {
+            color: var(--text-secondary);
+            font-size: 0.9rem;
+        }
+
+        /* Architecture Section */
+        .architecture-diagram {
+            background: var(--bg-card);
+            border-radius: 16px;
+            padding: 2rem;
+            border: 1px solid var(--border);
+            overflow-x: auto;
+        }
+
+        .architecture-diagram pre {
+            color: var(--text-primary);
+            font-family: 'Fira Code', monospace;
+            font-size: 0.85rem;
+            line-height: 1.6;
+            white-space: pre;
+        }
+
+        /* Pipeline Section */
+        .pipeline-steps {
+            display: flex;
+            flex-direction: column;
+            gap: 2rem;
+        }
+
+        .pipeline-step {
+            display: flex;
+            gap: 2rem;
+            align-items: flex-start;
+        }
+
+        .step-number {
+            min-width: 60px;
+            height: 60px;
+            background: linear-gradient(135deg, var(--primary), var(--primary-dark));
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: white;
+        }
+
+        .step-content {
+            flex: 1;
+            background: var(--bg-card);
+            border-radius: 12px;
+            padding: 1.5rem;
+            border: 1px solid var(--border);
+        }
+
+        .step-content h4 {
+            font-size: 1.2rem;
+            color: var(--primary);
+            margin-bottom: 0.5rem;
+        }
+
+        .step-content p {
+            color: var(--text-secondary);
+            margin-bottom: 1rem;
+        }
+
+        .step-details {
+            background: var(--bg-dark);
+            border-radius: 8px;
+            padding: 1rem;
+            font-size: 0.9rem;
+        }
+
+        .step-details code {
+            color: var(--secondary);
+            font-family: 'Fira Code', monospace;
+        }
+
+        /* Tech Stack */
+        .tech-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+            gap: 1.5rem;
+        }
+
+        .tech-item {
+            background: var(--bg-card);
+            border-radius: 12px;
+            padding: 1.5rem;
+            text-align: center;
+            border: 1px solid var(--border);
+            transition: transform 0.3s, border-color 0.3s;
+        }
+
+        .tech-item:hover {
+            transform: translateY(-5px);
+            border-color: var(--primary);
+        }
+
+        .tech-item i {
+            font-size: 2.5rem;
+            margin-bottom: 1rem;
+            color: var(--primary);
+        }
+
+        .tech-item h4 {
+            font-size: 1rem;
+            color: var(--text-primary);
+            margin-bottom: 0.25rem;
+        }
+
+        .tech-item p {
+            font-size: 0.8rem;
+            color: var(--text-muted);
+        }
+
+        /* ML Model Section */
+        .model-info {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 2rem;
+        }
+
+        @media (max-width: 768px) {
+            .model-info {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        .model-card {
+            background: var(--bg-card);
+            border-radius: 16px;
+            padding: 2rem;
+            border: 1px solid var(--border);
+        }
+
+        .model-card h4 {
+            font-size: 1.25rem;
+            color: var(--primary);
+            margin-bottom: 1rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .input-list, .output-list {
+            list-style: none;
+        }
+
+        .input-list li, .output-list li {
+            padding: 0.75rem 0;
+            border-bottom: 1px solid var(--border);
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+        }
+
+        .input-list li:last-child, .output-list li:last-child {
+            border-bottom: none;
+        }
+
+        .input-list i {
+            color: var(--secondary);
+        }
+
+        .output-list i {
+            color: var(--success);
+        }
+
+        /* Future Work */
+        .future-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            gap: 2rem;
+        }
+
+        .future-card {
+            background: var(--bg-card);
+            border-radius: 16px;
+            padding: 2rem;
+            border: 1px solid var(--border);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .future-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 4px;
+            background: linear-gradient(90deg, var(--primary), var(--secondary));
+        }
+
+        .future-badge {
+            display: inline-block;
+            background: rgba(20, 184, 166, 0.1);
+            color: var(--primary);
+            padding: 0.25rem 0.75rem;
+            border-radius: 50px;
+            font-size: 0.75rem;
+            margin-bottom: 1rem;
+        }
+
+        .future-card h4 {
+            font-size: 1.25rem;
+            margin-bottom: 1rem;
+            color: var(--text-primary);
+        }
+
+        .future-card p {
+            color: var(--text-secondary);
+            margin-bottom: 1rem;
+        }
+
+        .requirements-box {
+            background: var(--bg-dark);
+            border-radius: 8px;
+            padding: 1rem;
+            border-left: 3px solid var(--warning);
+        }
+
+        .requirements-box h5 {
+            color: var(--warning);
+            font-size: 0.85rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .requirements-box p {
+            font-size: 0.85rem;
+            margin: 0;
+        }
+
+        /* Results Section */
+        .results-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 1.5rem;
+            margin-bottom: 3rem;
+        }
+
+        @media (max-width: 768px) {
+            .results-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+
+        .result-card {
+            background: var(--bg-card);
+            border-radius: 12px;
+            padding: 1.5rem;
+            text-align: center;
+            border: 1px solid var(--border);
+        }
+
+        .result-card .value {
+            font-size: 2.5rem;
+            font-weight: 700;
+            color: var(--primary);
+            display: block;
+        }
+
+        .result-card .label {
+            color: var(--text-secondary);
+            font-size: 0.9rem;
+        }
+
+        /* Requirements Checklist */
+        .checklist {
+            background: var(--bg-card);
+            border-radius: 16px;
+            padding: 2rem;
+            border: 1px solid var(--border);
+        }
+
+        .checklist-item {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            padding: 1rem 0;
+            border-bottom: 1px solid var(--border);
+        }
+
+        .checklist-item:last-child {
+            border-bottom: none;
+        }
+
+        .checklist-item i {
+            color: var(--success);
+            font-size: 1.25rem;
+        }
+
+        .checklist-item .requirement {
+            flex: 1;
+            color: var(--text-primary);
+        }
+
+        .checklist-item .implementation {
+            color: var(--text-secondary);
+            font-size: 0.9rem;
+        }
+
+        /* Demo Section */
+        .demo-container {
+            background: var(--bg-card);
+            border-radius: 16px;
+            padding: 2rem;
+            border: 1px solid var(--border);
+            text-align: center;
+        }
+
+        .demo-buttons {
+            display: flex;
+            gap: 1rem;
+            justify-content: center;
+            flex-wrap: wrap;
+            margin-top: 2rem;
+        }
+
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 1rem 2rem;
+            border-radius: 8px;
+            font-size: 1rem;
+            font-weight: 600;
+            text-decoration: none;
+            transition: transform 0.3s, box-shadow 0.3s;
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, var(--primary), var(--primary-dark));
+            color: white;
+        }
+
+        .btn-secondary {
+            background: var(--bg-dark);
+            color: var(--text-primary);
+            border: 1px solid var(--border);
+        }
+
+        .btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 10px 30px rgba(20, 184, 166, 0.3);
+        }
+
+        /* Footer */
+        footer {
+            background: var(--bg-card);
+            border-top: 1px solid var(--border);
+            padding: 3rem 2rem;
+            text-align: center;
+        }
+
+        .footer-content {
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        .footer-content h3 {
+            font-size: 1.5rem;
+            margin-bottom: 1rem;
+            color: var(--text-primary);
+        }
+
+        .footer-content p {
+            color: var(--text-secondary);
+            margin-bottom: 1.5rem;
+        }
+
+        .footer-links {
+            display: flex;
+            justify-content: center;
+            gap: 2rem;
+            flex-wrap: wrap;
+        }
+
+        .footer-links a {
+            color: var(--text-muted);
+            text-decoration: none;
+            transition: color 0.3s;
+        }
+
+        .footer-links a:hover {
+            color: var(--primary);
+        }
+
+        .disclaimer {
+            margin-top: 2rem;
+            padding-top: 2rem;
+            border-top: 1px solid var(--border);
+            font-size: 0.85rem;
+            color: var(--text-muted);
+        }
+
+        /* Animations */
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .animate {
+            animation: fadeInUp 0.6s ease-out forwards;
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .hero h1 {
+                font-size: 2.5rem;
+            }
+
+            .nav-links {
+                display: none;
+            }
+
+            .hero-meta {
+                gap: 1.5rem;
+            }
+
+            .pipeline-step {
+                flex-direction: column;
+            }
+
+            .step-number {
+                min-width: 50px;
+                height: 50px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Navigation -->
+    <nav>
+        <div class="nav-container">
+            <div class="logo">🎯 H-1B Intelligence</div>
+            <ul class="nav-links">
+                <li><a href="#problem">Problem</a></li>
+                <li><a href="#solution">Solution</a></li>
+                <li><a href="#architecture">Architecture</a></li>
+                <li><a href="#pipeline">Pipeline</a></li>
+                <li><a href="#model">ML Model</a></li>
+                <li><a href="#future">Future Work</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section class="hero">
+        <div class="hero-content">
+            <span class="hero-badge">INFO 7390</span>
+            <h1>H-1B Sponsorship Intelligence Platform</h1>
+            <p>This project implements an AI-powered Retrieval-Augmented Generation (RAG) system using Pinecone and GPT-4o to analyze real USCIS H-1B data, enabling semantic search, predictive insights, and explainable recommendations through an interactive Streamlit application.</p>
+            <p style="margin-top: 1rem; color: var(--text-secondary);">The system is designed to help international students make data-driven decisions by understanding H-1B visa sponsorship patterns across companies, roles, salaries, and locations.</p>
+            
+            <div class="hero-meta">
+                <div class="hero-meta-item">
+                    <strong>Abhinav Kumar Piyush</strong>
+                    <span>Author</span>
+                </div>
+                <div class="hero-meta-item">
+                    <strong>Northeastern University</strong>
+                    <span>Institution</span>
+                </div>
+                <div class="hero-meta-item">
+                    <strong>RAG + ML + LLM</strong>
+                    <span>Technologies</span>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Problem Section -->
+    <section id="problem">
+        <div class="section-header">
+            <span class="section-number">1</span>
+            <h2>The Problem</h2>
+            <p>International students face significant challenges when navigating the H-1B visa sponsorship landscape</p>
+        </div>
+
+        <div class="problem-grid">
+            <div class="problem-card">
+                <i class="fas fa-question-circle"></i>
+                <h3>Information Asymmetry</h3>
+                <p>No centralized platform to understand which companies actively sponsor H-1B visas and their historical patterns.</p>
+            </div>
+            <div class="problem-card">
+                <i class="fas fa-dice"></i>
+                <h3>Lottery Uncertainty</h3>
+                <p>H-1B has only ~25-30% selection rate. Students need data-driven strategies to maximize their chances.</p>
+            </div>
+            <div class="problem-card">
+                <i class="fas fa-chart-line"></i>
+                <h3>No Predictive Insights</h3>
+                <p>Raw government data exists but lacks analysis on what factors indicate strong sponsorship likelihood.</p>
+            </div>
+            <div class="problem-card">
+                <i class="fas fa-clock"></i>
+                <h3>Time-Consuming Research</h3>
+                <p>Manually searching through 600K+ annual applications to find relevant sponsors is impractical.</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Solution Section -->
+    <section id="solution">
+        <div class="section-header">
+            <span class="section-number">2</span>
+            <h2>Our Solution</h2>
+            <p>A comprehensive AI-powered platform combining data analytics, ML predictions, and conversational AI</p>
+        </div>
+
+        <div class="solution-container">
+            <div class="solution-header">
+                <h3>🎯 H-1B Sponsorship Intelligence Platform</h3>
+                <p>Built with Streamlit, Pinecone, GPT-4o, and Scikit-learn</p>
+            </div>
+
+            <div class="features-grid">
+                <div class="feature-card">
+                    <div class="feature-icon"><i class="fas fa-chart-bar"></i></div>
+                    <h4>📊 Interactive Dashboard</h4>
+                    <p>Visualize top H-1B sponsors, salary trends, and filing patterns with real USCIS 2024 data.</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon"><i class="fas fa-balance-scale"></i></div>
+                    <h4>📈 Company Comparison</h4>
+                    <p>Compare companies side-by-side on filings, salaries, and sponsorship scores.</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon"><i class="fas fa-robot"></i></div>
+                    <h4>🤖 ML Predictor</h4>
+                    <p>Predict sponsorship likelihood based on job role, salary, location, company size, and education.</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon"><i class="fas fa-cogs"></i></div>
+                    <h4>⚙️ Data Pipeline</h4>
+                    <p>Upload raw USCIS Excel → Clean → Configure → Load into app with interactive controls.</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon"><i class="fas fa-comments"></i></div>
+                    <h4>💬 AI Advisor (RAG)</h4>
+                    <p>Chat with GPT-4o powered advisor that retrieves relevant company data from Pinecone vector database.</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon"><i class="fas fa-book"></i></div>
+                    <h4>ℹ️ Documentation</h4>
+                    <p>Complete project documentation including architecture, future work, and ethical considerations.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Architecture Section -->
+    <section id="architecture">
+        <div class="section-header">
+            <span class="section-number">3</span>
+            <h2>System Architecture</h2>
+            <p>A modular design separating data pipeline, ML model, and RAG components</p>
+        </div>
+
+        <div class="architecture-diagram">
+            <pre>
+┌─────────────────────────────────────────────────────────────────────────────┐
+│                              DATA LAYER                                     │
+├─────────────────────────────────────────────────────────────────────────────┤
+│                                                                             │
+│   📥 Raw USCIS Excel        🔄 clean_data.py          📊 Cleaned CSV      │
+│   (600K+ applications)  ──────────────────────►                             │
+│                                                                             │
+└─────────────────────────────────────────────────────────────────────────────┘
+                                      │
+                                      ▼
+┌─────────────────────────────────────────────────────────────────────────────┐
+│                           APPLICATION LAYER                                 │
+├─────────────────────────────────────────────────────────────────────────────┤
+│                                                                             │
+│   ┌───────────────┐   ┌───────────────┐   ┌───────────────────────────────┐ │
+│   │   Dashboard   │   │   Predictor   │   │        RAG Chatbot            │ │
+│   │   (Plotly)    │   │  (ML Model)   │   │   (Pinecone + GPT-4o)         │ │
+│   │               │   │               │   │                               │ │
+│   │ • Top sponsors│   │ • Job role    │   │  User Query                   │ │
+│   │ • Salary viz  │   │ • Salary      │   │      ↓                        │ │
+│   │ • Trends      │   │ • State       │   │  Vector Search (Pinecone)     │ │
+│   │ • Pie charts  │   │ • Company sz  │   │      ↓                        │ │
+│   └───────────────┘   │ • Education   │   │  Context Retrieval            │ │
+│                       │       ↓       │   │      ↓                        │ │
+│   ┌───────────────┐   │  HIGH/MED/LOW │   │  GPT-4o Response              │ │
+│   │  Comparison   │   │  + Confidence │   │      ↓                        │ │
+│   │               │   │  + Factors    │   │  Answer + Sources             │ │
+│   └───────────────┘   └───────────────┘   └───────────────────────────────┘ │
+│                                                                             │
+└─────────────────────────────────────────────────────────────────────────────┘
+                                      │
+                                      ▼
+┌─────────────────────────────────────────────────────────────────────────────┐
+│                          EXTERNAL SERVICES                                  │
+├─────────────────────────────────────────────────────────────────────────────┤
+│                                                                             │
+│   🔷 Pinecone                              🤖 OpenAI                       │
+│   ─────────────                            ────────────                     │
+│   • Vector Database                        • text-embedding-3-small         │
+│   • Semantic Search                        • GPT-4o Chat Completions        │
+│   • 1536-dim embeddings                    • Context-aware responses        │
+│                                                                             │
+└─────────────────────────────────────────────────────────────────────────────┘
+            </pre>
+        </div>
+
+        <!-- Why Pinecone & Generative AI Note -->
+        <div style="margin-top: 2rem; display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 1.5rem;">
+            <div style="background: var(--bg-card); border-radius: 12px; padding: 1.5rem; border-left: 4px solid var(--primary);">
+                <h4 style="color: var(--primary); margin-bottom: 0.5rem;"><i class="fas fa-database"></i> Why Pinecone?</h4>
+                <p style="color: var(--text-secondary); font-size: 0.9rem; margin: 0;">
+                    Pinecone was selected for its managed scalability, fast cosine similarity search, and seamless integration with OpenAI embeddings—enabling efficient semantic retrieval without infrastructure overhead.
+                </p>
+            </div>
+            <div style="background: var(--bg-card); border-radius: 12px; padding: 1.5rem; border-left: 4px solid var(--secondary);">
+                <h4 style="color: var(--secondary); margin-bottom: 0.5rem;"><i class="fas fa-robot"></i> Intelligent Response Generation</h4>
+                <p style="color: var(--text-secondary); font-size: 0.9rem; margin: 0;">
+                    While Pinecone retrieves relevant context, GPT-4o synthesizes the retrieved data into coherent explanations, personalized recommendations, and natural language insights—going beyond simple search to deliver actionable intelligence.
+                </p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Pipeline Section -->
+    <section id="pipeline">
+        <div class="section-header">
+            <span class="section-number">4</span>
+            <h2>Data Pipeline</h2>
+            <p>From raw government data to actionable insights</p>
+        </div>
+
+        <div class="pipeline-steps">
+            <div class="pipeline-step">
+                <div class="step-number">1</div>
+                <div class="step-content">
+                    <h4>Data Collection</h4>
+                    <p>Download official USCIS LCA Disclosure Data from U.S. Department of Labor</p>
+                    <div class="step-details">
+                        <strong>Source:</strong> <code>dol.gov/agencies/eta/foreign-labor/performance</code><br>
+                        <strong>Format:</strong> Excel (.xlsx), ~150MB per year<br>
+                        <strong>Records:</strong> 600,000+ H-1B applications
+                    </div>
+                </div>
+            </div>
+
+            <div class="pipeline-step">
+                <div class="step-number">2</div>
+                <div class="step-content">
+                    <h4>Data Preprocessing</h4>
+                    <p>Clean and standardize raw data using <code>clean_data.py</code></p>
+                    <div class="step-details">
+                        <strong>Steps:</strong><br>
+                        • Filter H-1B Certified applications only<br>
+                        • Standardize company names (GOOGLE LLC → GOOGLE)<br>
+                        • Convert wages to annual salary<br>
+                        • Remove outliers ($30K - $500K range)
+                    </div>
+                </div>
+            </div>
+
+            <div class="pipeline-step">
+                <div class="step-number">3</div>
+                <div class="step-content">
+                    <h4>Aggregation</h4>
+                    <p>Group by company and calculate statistics</p>
+                    <div class="step-details">
+                        <strong>Metrics per company:</strong><br>
+                        • Total filings count<br>
+                        • Average & median salary<br>
+                        • Primary state location<br>
+                        • Sponsorship score (0-100)
+                    </div>
+                </div>
+            </div>
+
+            <div class="pipeline-step">
+                <div class="step-number">4</div>
+                <div class="step-content">
+                    <h4>Feature Engineering</h4>
+                    <p>Create derived features for analysis and ML</p>
+                    <div class="step-details">
+                        <strong>Features created:</strong><br>
+                        • <code>sponsorship_score</code>: Weighted combination of volume + salary<br>
+                        • <code>size_category</code>: Small / Medium / Large / Enterprise<br>
+                        • <code>salary_category</code>: Low / Medium / High
+                    </div>
+                </div>
+            </div>
+
+            <div class="pipeline-step">
+                <div class="step-number">5</div>
+                <div class="step-content">
+                    <h4>Vector Indexing</h4>
+                    <p>Convert company data to embeddings and store in Pinecone</p>
+                    <div class="step-details">
+                        <strong>Process:</strong><br>
+                        • Generate text description for each company<br>
+                        • Create 1536-dim embeddings via OpenAI<br>
+                        • Upsert to Pinecone with metadata
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Interactive Upload Note -->
+        <div style="margin-top: 3rem; padding: 2rem; background: linear-gradient(135deg, rgba(20, 184, 166, 0.1), rgba(245, 158, 11, 0.1)); border-radius: 12px; border: 1px solid var(--border);">
+            <div style="display: flex; align-items: flex-start; gap: 1.5rem; flex-wrap: wrap;">
+                <div style="flex: 1; min-width: 280px;">
+                    <h4 style="color: var(--primary); margin-bottom: 0.75rem; display: flex; align-items: center; gap: 0.5rem;">
+                        <i class="fas fa-database"></i> Default Data
+                    </h4>
+                    <p style="color: var(--text-secondary); font-size: 0.9rem; margin: 0;">
+                        The application ships with pre-cleaned H-1B data in the <code style="background: var(--bg-dark); padding: 0.2rem 0.5rem; border-radius: 4px;">data/</code> folder. This serves as the primary dataset for all visualizations, comparisons, and predictions.
+                    </p>
+                </div>
+                <div style="flex: 1; min-width: 280px;">
+                    <h4 style="color: var(--secondary); margin-bottom: 0.75rem; display: flex; align-items: center; gap: 0.5rem;">
+                        <i class="fas fa-upload"></i> Interactive Upload
+                    </h4>
+                    <p style="color: var(--text-secondary); font-size: 0.9rem; margin: 0;">
+                        Users can upload raw USCIS Excel files directly in the app via the <strong>Data Pipeline</strong> page. Configure parameters, process in real-time, and explore custom datasets within the session—no coding required.
+                    </p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Tech Stack -->
+    <section id="tech">
+        <div class="section-header">
+            <span class="section-number">5</span>
+            <h2>Technology Stack</h2>
+            <p>Modern tools for data processing, ML, and AI</p>
+        </div>
+
+        <div class="tech-grid">
+            <div class="tech-item">
+                <i class="fas fa-database"></i>
+                <h4>Pinecone</h4>
+                <p>Vector Database</p>
+            </div>
+            <div class="tech-item">
+                <i class="fas fa-brain"></i>
+                <h4>GPT-4o</h4>
+                <p>Large Language Model</p>
+            </div>
+            <div class="tech-item">
+                <i class="fas fa-vector-square"></i>
+                <h4>OpenAI Embeddings</h4>
+                <p>text-embedding-3-small</p>
+            </div>
+            <div class="tech-item">
+                <i class="fas fa-desktop"></i>
+                <h4>Streamlit</h4>
+                <p>Web Framework</p>
+            </div>
+            <div class="tech-item">
+                <i class="fas fa-cogs"></i>
+                <h4>Scikit-learn</h4>
+                <p>ML Framework</p>
+            </div>
+            <div class="tech-item">
+                <i class="fas fa-chart-pie"></i>
+                <h4>Plotly</h4>
+                <p>Visualization</p>
+            </div>
+            <div class="tech-item">
+                <i class="fas fa-table"></i>
+                <h4>Pandas</h4>
+                <p>Data Processing</p>
+            </div>
+            <div class="tech-item">
+                <i class="fas fa-rocket"></i>
+                <h4>XGBoost</h4>
+                <p>Gradient Boosting</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- ML Model Section -->
+    <section id="model">
+        <div class="section-header">
+            <span class="section-number">6</span>
+            <h2>ML Prediction Model</h2>
+            <p>Predicting H-1B sponsorship likelihood based on multiple factors</p>
+        </div>
+
+        <div class="model-info">
+            <div class="model-card">
+                <h4><i class="fas fa-sign-in-alt"></i> Model Inputs</h4>
+                <ul class="input-list">
+                    <li><i class="fas fa-briefcase"></i> <span>Job Role Category (Software Engineer, Data Scientist, etc.)</span></li>
+                    <li><i class="fas fa-dollar-sign"></i> <span>Expected Salary ($60K - $250K)</span></li>
+                    <li><i class="fas fa-map-marker-alt"></i> <span>Target State (CA, WA, NY, TX, etc.)</span></li>
+                    <li><i class="fas fa-building"></i> <span>Company Size (Small to Enterprise)</span></li>
+                    <li><i class="fas fa-graduation-cap"></i> <span>Education Level (Bachelor's, Master's, PhD)</span></li>
+                </ul>
+            </div>
+
+            <div class="model-card">
+                <h4><i class="fas fa-sign-out-alt"></i> Model Outputs</h4>
+                <ul class="output-list">
+                    <li><i class="fas fa-check-circle"></i> <span>Likelihood: HIGH / MEDIUM / LOW</span></li>
+                    <li><i class="fas fa-percentage"></i> <span>Confidence Score (0-100%)</span></li>
+                    <li><i class="fas fa-info-circle"></i> <span>Factor-by-factor explanations</span></li>
+                    <li><i class="fas fa-lightbulb"></i> <span>Personalized recommendations</span></li>
+                    <li><i class="fas fa-chart-bar"></i> <span>Feature importance visualization</span></li>
+                </ul>
+            </div>
+        </div>
+
+        <div style="margin-top: 2rem; background: var(--bg-card); border-radius: 16px; padding: 2rem; border: 1px solid var(--border);">
+            <h4 style="color: var(--primary); margin-bottom: 1rem;">📓 Training Notebook</h4>
+            <p style="color: var(--text-secondary); margin-bottom: 1rem;">
+                A complete Jupyter notebook is provided for training on real data with:
+            </p>
+            <ul style="color: var(--text-secondary); padding-left: 1.5rem;">
+                <li>5 model comparison (Logistic Regression, Decision Tree, Random Forest, Gradient Boosting, XGBoost)</li>
+                <li>Cross-validation and hyperparameter tuning</li>
+                <li>GPU acceleration support for Colab</li>
+                <li>Feature importance analysis</li>
+                <li>Model export for production use</li>
+            </ul>
+        </div>
+    </section>
+
+    <!-- Results Section -->
+    <section id="results">
+        <div class="section-header">
+            <span class="section-number">7</span>
+            <h2>Project Results</h2>
+            <p>Key metrics and achievements</p>
+        </div>
+
+        <div class="results-grid" style="grid-template-columns: repeat(3, 1fr);">
+            <div class="result-card">
+                <span class="value">50+</span>
+                <span class="label">Companies Analyzed</span>
+            </div>
+            <div class="result-card">
+                <span class="value">34K+</span>
+                <span class="label">H-1B Filings</span>
+            </div>
+            <div class="result-card">
+                <span class="value">$146K</span>
+                <span class="label">Avg Salary</span>
+            </div>
+        </div>
+    </section>
+
+    <!-- Future Work Section -->
+    <section id="future">
+        <div class="section-header">
+            <span class="section-number">8</span>
+            <h2>Future Work</h2>
+            <p>Planned enhancements for next iterations</p>
+        </div>
+
+        <div class="future-grid">
+            <div class="future-card">
+                <span class="future-badge">Phase 2</span>
+                <h4>📈 Time-Series Prediction</h4>
+                <p>
+                    With multi-year data (2020-2024), predict a company's future H-1B filing volume. 
+                    Identify growing vs declining sponsors and forecast industry trends.
+                </p>
+                <div class="requirements-box">
+                    <h5>Requirements</h5>
+                    <p>5 years of USCIS LCA data, time-series models (ARIMA, Prophet, LSTM)</p>
+                </div>
+            </div>
+
+            <div class="future-card">
+                <span class="future-badge">Phase 3</span>
+                <h4>📄 Resume-Based Prediction</h4>
+                <p>
+                    Upload a resume to predict H-1B approval likelihood. Extract skills, education, 
+                    and experience via NLP, then match against successful H-1B profiles.
+                </p>
+                <div class="requirements-box">
+                    <h5>Requirements</h5>
+                    <p>Labeled dataset of approved/denied applications with resume data, NLP pipeline for skill extraction</p>
+                </div>
+            </div>
+
+            <div class="future-card">
+                <span class="future-badge">Enhancement</span>
+                <h4>🌐 Real-Time Data Updates</h4>
+                <p>
+                    Automatically fetch and process new USCIS quarterly releases. 
+                    Provide alerts when new data is available or trends change significantly.
+                </p>
+                <div class="requirements-box">
+                    <h5>Requirements</h5>
+                    <p>Scheduled jobs, data versioning, change detection algorithms</p>
+                </div>
+            </div>
+
+            <div class="future-card">
+                <span class="future-badge">Enhancement</span>
+                <h4>🎯 Job Matching Engine</h4>
+                <p>
+                    Given a user's profile, recommend specific job postings from companies 
+                    with high sponsorship likelihood. Integrate with job boards APIs.
+                </p>
+                <div class="requirements-box">
+                    <h5>Requirements</h5>
+                    <p>LinkedIn/Indeed API access, job posting database, matching algorithm</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Get Started Section -->
+    <section id="demo">
+        <div class="demo-container">
+            <h2 style="margin-bottom: 1rem;">🚀 Get Started</h2>
+            <p style="color: var(--text-secondary); margin-bottom: 2rem;">
+                Clone the repository and run the application locally in minutes.
+            </p>
+            <div style="background: var(--bg-dark); border-radius: 12px; padding: 1.5rem; text-align: left; margin-bottom: 2rem;">
+                <code style="color: var(--primary); font-size: 0.95rem;">
+                    <span style="color: var(--text-muted);"># Install dependencies</span><br>
+                    pip install -r requirements.txt<br><br>
+                    <span style="color: var(--text-muted);"># Run the application</span><br>
+                    streamlit run app.py
+                </code>
+            </div>
+            <p style="color: var(--text-secondary); font-size: 0.9rem;">
+                <i class="fas fa-info-circle" style="color: var(--primary);"></i>
+                Add your <strong>OpenAI</strong> and <strong>Pinecone</strong> API keys in <code>.streamlit/secrets.toml</code> for full RAG functionality.
+            </p>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer>
+        <div class="footer-content">
+            <h3>H-1B Sponsorship Intelligence Platform</h3>
+
+            <!-- Collapsible License -->
+            <div style="margin-top: 2rem; display: flex; gap: 1rem; justify-content: center; flex-wrap: wrap;">
+                <button onclick="document.getElementById('license-modal').style.display='flex'" style="background: var(--bg-dark); border: 1px solid var(--border); color: var(--text-primary); padding: 0.75rem 1.5rem; border-radius: 8px; cursor: pointer; font-size: 0.9rem; display: flex; align-items: center; gap: 0.5rem; transition: border-color 0.3s;">
+                    <i class="fas fa-file-alt"></i> View License
+                </button>
+            </div>
+
+            <!-- License Modal -->
+            <div id="license-modal" style="display: none; position: fixed; top: 0; left: 0; right: 0; bottom: 0; background: rgba(0,0,0,0.8); z-index: 2000; justify-content: center; align-items: center; padding: 2rem;" onclick="if(event.target === this) this.style.display='none'">
+                <div style="background: var(--bg-card); border-radius: 16px; max-width: 700px; max-height: 80vh; overflow-y: auto; padding: 2rem; position: relative; border: 1px solid var(--border);">
+                    <button onclick="document.getElementById('license-modal').style.display='none'" style="position: absolute; top: 1rem; right: 1rem; background: none; border: none; color: var(--text-muted); font-size: 1.5rem; cursor: pointer;">&times;</button>
+                    <h3 style="color: var(--primary); margin-bottom: 1.5rem;"><i class="fas fa-file-alt"></i> MIT License</h3>
+                    <pre style="color: var(--text-secondary); font-size: 0.85rem; white-space: pre-wrap; line-height: 1.6;">MIT License
+
+Copyright (c) 2025 Abhinav Kumar Piyush
+
+Permission is hereby granted, free of charge, to any person obtaining a copy
+of this software and associated documentation files (the "Software"), to deal
+in the Software without restriction, including without limitation the rights
+to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+copies of the Software, and to permit persons to whom the Software is
+furnished to do so, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in all
+copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+SOFTWARE.</pre>
+                </div>
+            </div>
+
+            
+            <!-- Limitations Section -->
+            <div style="margin-top: 2rem; padding: 1.5rem; background: rgba(239, 68, 68, 0.1); border-radius: 8px; border: 1px solid rgba(239, 68, 68, 0.3);">
+                <h4 style="color: #ef4444; margin-bottom: 0.75rem; font-size: 0.95rem;">⚠️ Limitations</h4>
+                <p style="color: var(--text-secondary); font-size: 0.85rem; margin: 0;">
+                    This system relies on historical H-1B data and cannot account for company policy changes, legal strategy shifts, or individual applicant strength. Predictions represent probabilistic trends based on past patterns, not guarantees of future sponsorship.
+                </p>
+            </div>
+            
+            <div class="disclaimer">
+                <strong>Disclaimer:</strong> This project is for educational purposes only. 
+                The predictions and recommendations are based on historical data patterns and should NOT be considered legal advice. 
+                H-1B visa decisions involve many factors not captured in this model. 
+                Always consult with a qualified immigration attorney for legal advice.
+            </div>
+	    <p style="color: var(--text-muted); font-size: 0.8rem; margin-top: 2rem; text-align: center;">
+                INFO 7390: Advances in Data Science and Architecture | Northeastern University<br>
+                Instructor: Prof. Nick Bear Brown<br>
+		Developed by: © Abhinav Kumar Piyush
+            </p>
+        </div>
+    </footer>
+
+    <script>
+        // Smooth scrolling
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                const target = document.querySelector(this.getAttribute('href'));
+                if (target) {
+                    target.scrollIntoView({
+                        behavior: 'smooth',
+                        block: 'start'
+                    });
+                }
+            });
+        });
+
+        // Animate on scroll
+        const observerOptions = {
+            threshold: 0.1,
+            rootMargin: '0px 0px -50px 0px'
+        };
+
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('animate');
+                }
+            });
+        }, observerOptions);
+
+        document.querySelectorAll('section').forEach(section => {
+            observer.observe(section);
+        });
+    </script>
+</body>
+</html>
