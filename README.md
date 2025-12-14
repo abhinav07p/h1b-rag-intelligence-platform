@@ -187,7 +187,7 @@ h1b-rag-project/
 
 ### Step 1: Clone Repository
 ```bash
-git clone https://github.com/[username]/[folder name/project name].git
+git clone https://github.com/abhinav07p/h1b-rag-intelligence-platform.git
 cd h1b-rag-project
 ```
 
@@ -390,14 +390,14 @@ PINECONE_API_KEY = "pcsk_..."
 ```
 
 ### Live Application
-**URL:** [Your Streamlit App URL]
+**URL:** https://abhinav07p-h1b-rag-intelligence-platform-app-d4spbw.streamlit.app/
 
 ---
 
 ## Demo
 
 ### Video Demo
-**YouTube:** [Your Video URL]
+**YouTube:** https://youtu.be/VLKeaW5GTiA
 
 **Duration:** 10-15 minutes
 
