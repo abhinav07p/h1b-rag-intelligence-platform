@@ -5,7 +5,7 @@
 [![Streamlit](https://img.shields.io/badge/Streamlit-1.31-red.svg)](https://streamlit.io)
 
 **INFO 7390: Advances in Data Science and Architecture**  
-**Author:** Abhinav Kumar Piyush  
+**Author:** ABHINAV KUMAR PIYUSH 
 **University:** Northeastern University  
 
 ---
