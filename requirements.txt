@@ -18,8 +18,9 @@ joblib>=1.3.0         # Model serialisation (save/load .pkl)
 plotly>=5.18.0
 
 # AI / LLM / Vector Database
-openai>=2.0.0         # GPT-4o inference + text-embedding-3-small
+openai>=1.12.0        # GPT-4o inference + text-embedding-3-small
 pinecone>=3.0.0       # Serverless vector index + cosine search
+torch>=2.1.0          # LSTM model training + inference
 
 # HTTP (data downloader)
 requests>=2.31.0
