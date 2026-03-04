@@ -19,14 +19,12 @@ import pandas as pd
 import numpy as np
 import plotly.express as px
 import plotly.graph_objects as go
-import sys
-sys.path.append('src')
 
-from data_loader import load_h1b_data, get_company_summary
-from data_pipeline import process_uploaded_file
-from prediction_model import H1BSponsorshipPredictor
-from vector_store import H1BVectorStore, MockVectorStore
-from rag_agent import H1BRAGAgent, MockRAGAgent
+from src.data.loader import load_h1b_data, get_company_summary
+from src.data.pipeline import process_uploaded_file
+from src.models.predictor import H1BSponsorshipPredictor
+from src.rag.vector_store import H1BVectorStore, MockVectorStore
+from src.rag.agent import H1BRAGAgent, MockRAGAgent
 
 @st.cache_data
 def get_comparison_data(df, companies):
